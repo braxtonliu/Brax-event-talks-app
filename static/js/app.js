@@ -19,6 +19,13 @@ const ICONS = {
     <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
     <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
   </svg>`,
+  copy: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2"/>
+    <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+  </svg>`,
+  check: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>`,
 };
 
 // ── State ──
@@ -38,6 +45,8 @@ const modalOverlay  = document.getElementById('modal-overlay');
 const tweetText     = document.getElementById('tweet-text');
 const charCount     = document.getElementById('char-count');
 const postTweetBtn  = document.getElementById('post-tweet-btn');
+const exportBtn     = document.getElementById('export-btn');
+const toast         = document.getElementById('toast');
 
 // ── Refresh button ──
 refreshBtn.innerHTML = `${ICONS.refresh} <span class="label">Refresh</span>`;
@@ -81,6 +90,9 @@ function buildCard(entry, index) {
           <button class="btn-tweet" onclick="openTweetModal(${index})" title="Share on X (Twitter)">
             ${ICONS.tweet} Tweet this
           </button>
+          <button class="btn-copy" id="copy-btn-${index}" onclick="copyToClipboard(${index})" title="Copy to clipboard">
+            ${ICONS.copy} Copy
+          </button>
           ${entry.link && entry.link !== '#' ? `
             <a class="btn-view" href="${escHtml(entry.link)}" target="_blank" rel="noopener noreferrer">
               ${ICONS.external} View on docs
@@ -111,6 +123,72 @@ function toggleCard(id) {
 function handleKeyCard(e, id) {
   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCard(id); }
 }
+
+// ── Toast helper ──
+let toastTimer = null;
+function showToast(msg) {
+  toast.innerHTML = `${ICONS.check} ${msg}`;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+// ── Copy to Clipboard ──
+function copyToClipboard(index) {
+  const entry = allEntries[index];
+  const link = (entry.link && entry.link !== '#') ? entry.link : '';
+  const text = [
+    entry.title,
+    entry.date,
+    entry.body_plain,
+    link ? `\nSource: ${link}` : ''
+  ].filter(Boolean).join('\n\n');
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(`copy-btn-${index}`);
+    if (btn) {
+      btn.classList.add('copied');
+      btn.innerHTML = `${ICONS.check} Copied!`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = `${ICONS.copy} Copy`;
+      }, 2000);
+    }
+    showToast('Copied to clipboard');
+  }).catch(() => showToast('Copy failed — please try again'));
+}
+
+// ── Export to CSV ──
+function escapeCSV(val) {
+  const str = String(val ?? '').replace(/"/g, '""');
+  return `"${str}"`;
+}
+
+function exportCSV() {
+  if (!allEntries.length) return;
+  const headers = ['Date', 'Title', 'Summary', 'Link'];
+  const rows = allEntries.map(e => [
+    escapeCSV(e.date),
+    escapeCSV(e.title),
+    escapeCSV(e.body_plain),
+    escapeCSV(e.link !== '#' ? e.link : ''),
+  ].join(','));
+
+  const csv = [headers.join(','), ...rows].join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const ts   = new Date().toISOString().slice(0, 10);
+  a.href     = url;
+  a.download = `bigquery-release-notes-${ts}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast(`Exported ${allEntries.length} entries to CSV`);
+}
+
+exportBtn.addEventListener('click', exportCSV);
 
 // ── Fetch release notes ──
 async function fetchReleaseNotes() {

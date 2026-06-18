@@ -176,6 +176,7 @@ main {
   color: var(--text-secondary);
   opacity: 0;
   transition: opacity 0.4s ease;
+  flex-wrap: wrap;
 }
 
 #stats-bar.visible { opacity: 1; }
@@ -191,6 +192,65 @@ main {
   color: var(--accent-primary);
   font-weight: 600;
   font-size: 0.8rem;
+}
+
+/* push export button to the far right */
+#stats-bar .spacer { flex: 1; }
+
+.btn-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 16px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btn-export:hover {
+  border-color: var(--success);
+  color: var(--success);
+  background: rgba(52, 211, 153, 0.08);
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.15);
+  transform: translateY(-1px);
+}
+
+/* ── Toast notification ── */
+#toast {
+  position: fixed;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--bg-card);
+  border: 1px solid var(--success);
+  color: var(--success);
+  font-family: var(--font);
+  font-size: 0.83rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 50px;
+  box-shadow: var(--shadow-md), 0 0 20px rgba(52,211,153,0.2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ── Skeleton ── */
@@ -385,6 +445,36 @@ main {
   margin-top: 14px;
   border-top: 1px solid var(--border);
   flex-wrap: wrap;
+}
+
+.btn-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.btn-copy:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.04);
+}
+
+.btn-copy.copied {
+  border-color: var(--success);
+  color: var(--success);
+  background: rgba(52, 211, 153, 0.08);
+  pointer-events: none;
 }
 
 .btn-tweet {

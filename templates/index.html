@@ -43,6 +43,15 @@
   <div id="stats-bar" aria-live="polite">
     <div class="count-pill" id="count-pill">— updates</div>
     <span id="last-updated"></span>
+    <div class="spacer"></div>
+    <button id="export-btn" class="btn-export" aria-label="Export all release notes to CSV">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Export CSV
+    </button>
   </div>
 
   <!-- Feed -->
@@ -88,6 +97,9 @@
     </div>
   </div>
 </div>
+
+<!-- ── Toast ── -->
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script src="/static/js/app.js"></script>
 </body>
