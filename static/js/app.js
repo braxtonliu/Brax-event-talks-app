@@ -47,6 +47,34 @@ const charCount     = document.getElementById('char-count');
 const postTweetBtn  = document.getElementById('post-tweet-btn');
 const exportBtn     = document.getElementById('export-btn');
 const toast         = document.getElementById('toast');
+const themeCheckbox = document.getElementById('theme-checkbox');
+const themeSwitch   = document.getElementById('theme-switch');
+
+// ── Theme toggle ──
+const THEME_KEY = 'bq-theme';
+
+function applyTheme(isLight) {
+  document.body.classList.toggle('light', isLight);
+  themeCheckbox.checked = isLight;
+  themeSwitch.setAttribute('aria-checked', String(isLight));
+  themeSwitch.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+  localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
+}
+
+// Initialise from saved preference (default: dark)
+applyTheme(localStorage.getItem(THEME_KEY) === 'light');
+
+// Click on the label/track toggles the checkbox automatically;
+// we just react to the change event.
+themeCheckbox.addEventListener('change', () => applyTheme(themeCheckbox.checked));
+
+// Keyboard support on the switch span
+themeSwitch.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    applyTheme(!themeCheckbox.checked);
+  }
+});
 
 // ── Refresh button ──
 refreshBtn.innerHTML = `${ICONS.refresh} <span class="label">Refresh</span>`;

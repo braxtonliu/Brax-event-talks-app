@@ -28,6 +28,17 @@
       </div>
     </div>
 
+    <!-- Theme toggle -->
+    <label class="theme-toggle" id="theme-toggle" title="Toggle light / dark mode">
+      <span class="theme-toggle-icon moon" aria-hidden="true">🌙</span>
+      <span id="theme-switch" role="switch" aria-checked="false" aria-label="Switch to light mode" tabindex="0">
+        <input type="checkbox" id="theme-checkbox" hidden />
+        <span class="switch-track"></span>
+        <span class="switch-thumb"></span>
+      </span>
+      <span class="theme-toggle-icon sun" aria-hidden="true">☀️</span>
+    </label>
+
     <button id="refresh-btn" aria-label="Refresh release notes">
       <div class="spinner hidden" id="spinner" role="status" aria-label="Loading"></div>
       <span id="refresh-icon"></span>
