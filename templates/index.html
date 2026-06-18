@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BigQuery Release Notes</title>
+  <meta name="description" content="Browse the latest Google BigQuery release notes, updates, and announcements — with one-click sharing to X (Twitter)." />
+  <meta property="og:title" content="BigQuery Release Notes Viewer" />
+  <meta property="og:description" content="Stay up-to-date with the latest BigQuery releases and announcements." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header role="banner">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon" aria-hidden="true">⚡</div>
+      <div>
+        <h1>BigQuery Release Notes</h1>
+        <p>Google Cloud · Live Feed</p>
+      </div>
+    </div>
+
+    <button id="refresh-btn" aria-label="Refresh release notes">
+      <div class="spinner hidden" id="spinner" role="status" aria-label="Loading"></div>
+      <span id="refresh-icon"></span>
+      <span class="label">Refresh</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── Main ── -->
+<main id="main-content">
+
+  <!-- Stats bar -->
+  <div id="stats-bar" aria-live="polite">
+    <div class="count-pill" id="count-pill">— updates</div>
+    <span id="last-updated"></span>
+  </div>
+
+  <!-- Feed -->
+  <div id="feed-container" role="feed" aria-label="BigQuery release notes">
+    <!-- Cards injected by JS -->
+  </div>
+</main>
+
+<!-- ── Scroll-to-top ── -->
+<button id="scroll-top" aria-label="Scroll to top" title="Back to top"></button>
+
+<!-- ── Tweet Modal ── -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true"
+     aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        Share on X (Twitter)
+      </h3>
+      <button class="modal-close" id="modal-close" aria-label="Close modal">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <label for="tweet-text">Compose your tweet</label>
+      <textarea id="tweet-text" rows="5" maxlength="500"
+                placeholder="Your tweet content…" spellcheck="true"></textarea>
+      <div class="char-counter">
+        <span id="char-count" class="good">0 / 280</span>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" id="cancel-tweet-btn">Cancel</button>
+      <button class="btn-post-tweet" id="post-tweet-btn" disabled>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        Post Tweet
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
